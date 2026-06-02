@@ -95,8 +95,8 @@ function normalizePlanItemPrimaryText(
 ) {
   const trimmedPrimaryText = primaryText.trim();
 
-  if (!plan.price && /^5\s+messages$/i.test(trimmedPrimaryText)) {
-    return "5 Messages / day";
+  if (!plan.price && /^2\s+messages$/i.test(trimmedPrimaryText)) {
+    return "2 Messages / day";
   }
 
   if (plan.price?.interval === "month" && /^500\s+messages$/i.test(trimmedPrimaryText)) {
