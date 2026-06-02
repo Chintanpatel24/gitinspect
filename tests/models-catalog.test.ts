@@ -12,7 +12,7 @@ import {
   getModelsForGroup,
   getProviderGroups,
 } from "@/models/catalog";
-import { FIREWORKS_KIMI_K25_TURBO_ID } from "@/models/builtin-models";
+import { FIREWORKS_KIMI_K26_ID } from "@/models/builtin-models";
 import type { ProviderGroupId } from "@/types/models";
 
 describe("model catalog", () => {
@@ -71,14 +71,14 @@ describe("model catalog", () => {
 
   it("exposes the Fireworks free tier builtin model", () => {
     const freeModels = getModelsForGroup("fireworks-free");
-    expect(freeModels.map((m) => m.id)).toEqual([FIREWORKS_KIMI_K25_TURBO_ID]);
-    expect(getDefaultModelForGroup("fireworks-free").id).toBe(FIREWORKS_KIMI_K25_TURBO_ID);
-    expect(getDefaultModel("fireworks-ai").id).toBe(FIREWORKS_KIMI_K25_TURBO_ID);
+    expect(freeModels.map((m) => m.id)).toEqual([FIREWORKS_KIMI_K26_ID]);
+    expect(getDefaultModelForGroup("fireworks-free").id).toBe(FIREWORKS_KIMI_K26_ID);
+    expect(getDefaultModel("fireworks-ai").id).toBe(FIREWORKS_KIMI_K26_ID);
   });
 
   it("maps legacy opencode-free persisted group id to Fireworks models", () => {
     expect(getDefaultModelForGroup("opencode-free" as ProviderGroupId).id).toBe(
-      FIREWORKS_KIMI_K25_TURBO_ID,
+      FIREWORKS_KIMI_K26_ID,
     );
     expect(getCanonicalProvider("opencode-free" as ProviderGroupId)).toBe("fireworks-ai");
   });

@@ -1,9 +1,9 @@
 import type { ModelDefinition } from "@gitinspect/pi/types/models";
 
-export const FIREWORKS_KIMI_K25_TURBO_ID = "accounts/fireworks/routers/kimi-k2p5-turbo" as const;
+export const FIREWORKS_KIMI_K26_ID = "accounts/fireworks/models/kimi-k2p6" as const;
 
-/** Fireworks serverless Kimi K2.5 Turbo (OpenAI-compatible API). */
-export const FIREWORKS_KIMI_K25_TURBO: ModelDefinition = {
+/** Fireworks Kimi K2.6 (OpenAI-compatible API). */
+export const FIREWORKS_KIMI_K26: ModelDefinition = {
   api: "openai-completions",
   baseUrl: "https://api.fireworks.ai/inference/v1",
   contextWindow: 262_144,
@@ -13,10 +13,10 @@ export const FIREWORKS_KIMI_K25_TURBO: ModelDefinition = {
     input: 0.6,
     output: 3,
   },
-  id: FIREWORKS_KIMI_K25_TURBO_ID,
+  id: FIREWORKS_KIMI_K26_ID,
   input: ["text", "image"],
   maxTokens: 16_384,
-  name: "Kimi K2.5 Turbo",
+  name: "Kimi K2.6",
   provider: "fireworks-ai",
   reasoning: false,
 };

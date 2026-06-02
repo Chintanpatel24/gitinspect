@@ -7,10 +7,7 @@ import type {
   Usage,
 } from "@gitinspect/pi/types/models";
 import { isOAuthCredentials, parseOAuthCredentials } from "@gitinspect/pi/auth/oauth-types";
-import {
-  FIREWORKS_KIMI_K25_TURBO,
-  FIREWORKS_KIMI_K25_TURBO_ID,
-} from "@gitinspect/pi/models/builtin-models";
+import { FIREWORKS_KIMI_K26, FIREWORKS_KIMI_K26_ID } from "@gitinspect/pi/models/builtin-models";
 import {
   getAtlasProviderGroups,
   getCanonicalProvider,
@@ -62,7 +59,7 @@ function openAiCodexSelectorModels(
 /** Preferred default model ids when registry still exposes them; otherwise first model is used. */
 export const DEFAULT_MODELS: Partial<Record<ProviderId, string>> = {
   anthropic: "claude-sonnet-4-6",
-  "fireworks-ai": FIREWORKS_KIMI_K25_TURBO_ID,
+  "fireworks-ai": FIREWORKS_KIMI_K26_ID,
   "github-copilot": "gpt-4o",
   "google-gemini-cli": "gemini-2.5-pro",
   openai: "gpt-5.4",
@@ -72,7 +69,7 @@ export const DEFAULT_MODELS: Partial<Record<ProviderId, string>> = {
 };
 
 const DEFAULT_GROUP_MODELS: Partial<Record<ProviderGroupId, string>> = {
-  "fireworks-free": FIREWORKS_KIMI_K25_TURBO_ID,
+  "fireworks-free": FIREWORKS_KIMI_K26_ID,
 };
 
 /** Dexie may still hold removed `opencode-free`; map before any group lookup. */
@@ -96,7 +93,7 @@ function pickOpenAiSelectorModels(models: Array<ModelDefinition>): Array<ModelDe
 
 export function getPiAiModels(provider: ProviderId): ModelDefinition[] {
   if (provider === "fireworks-ai") {
-    return [FIREWORKS_KIMI_K25_TURBO];
+    return [FIREWORKS_KIMI_K26];
   }
   const registryModels = getRegistryModels(provider as never) as ModelDefinition[];
   if (provider === "openai") {
@@ -110,7 +107,7 @@ export function getPiAiModels(provider: ProviderId): ModelDefinition[] {
 
 export function getPiAiModel(provider: ProviderId, modelId: string): ModelDefinition | undefined {
   if (provider === "fireworks-ai") {
-    return modelId === FIREWORKS_KIMI_K25_TURBO.id ? FIREWORKS_KIMI_K25_TURBO : undefined;
+    return modelId === FIREWORKS_KIMI_K26.id ? FIREWORKS_KIMI_K26 : undefined;
   }
   const direct = getRegistryModel(provider as never, modelId as never) as
     | ModelDefinition
