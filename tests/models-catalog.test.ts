@@ -58,6 +58,13 @@ describe("model catalog", () => {
   it("returns the configured default models", () => {
     expect(getDefaultModel("openai-codex").id).toBe(DEFAULT_MODELS["openai-codex"]);
     expect(getDefaultModel("anthropic").id).toBe(DEFAULT_MODELS.anthropic);
+    expect(getDefaultModel("groq").id).toBe(DEFAULT_MODELS.groq);
+    expect(getDefaultModel("openrouter").id).toBe(DEFAULT_MODELS.openrouter);
+  });
+
+  it("exposes models for Groq and OpenRouter groups", () => {
+    expect(getModelsForGroup("groq").length).toBeGreaterThan(0);
+    expect(getModelsForGroup("openrouter").length).toBeGreaterThan(0);
   });
 
   it("falls back to the provider default when the requested model is missing", () => {

@@ -144,9 +144,13 @@ export function parseRepoRoutePath(pathname: string): RepoPathIntent {
 }
 
 export function parseRepoInput(raw: string): RepoPathIntent {
-  const trimmed = raw.trim();
+  let trimmed = raw.trim();
   if (!trimmed) {
     return { type: "invalid", reason: "Empty repository input" };
+  }
+
+  if (trimmed.startsWith("git@github.com:")) {
+    trimmed = `https://github.com/${trimmed.slice("git@github.com:".length)}`;
   }
 
   const slashSegments = trimmed.split("/").filter(Boolean);
@@ -154,14 +158,21 @@ export function parseRepoInput(raw: string): RepoPathIntent {
     slashSegments.length === 2 &&
     !trimmed.includes(" ") &&
     !trimmed.includes("://") &&
-    !trimmed.startsWith("github.com/")
+    !trimmed.startsWith("github.com/") &&
+    !trimmed.startsWith("gitinspect.com/")
   ) {
     return parseRepoRoutePath(`/${slashSegments[0]}/${slashSegments[1]}`);
   }
 
   try {
     const url = new URL(normalizeUrlLikeInput(trimmed));
-    if (url.hostname !== "github.com" && url.hostname !== "www.github.com") {
+    const normalizedHost = url.hostname.toLowerCase();
+    if (
+      normalizedHost !== "github.com" &&
+      normalizedHost !== "www.github.com" &&
+      normalizedHost !== "gitinspect.com" &&
+      normalizedHost !== "www.gitinspect.com"
+    ) {
       return { type: "invalid", reason: `Unsupported host: ${url.hostname}` };
     }
 

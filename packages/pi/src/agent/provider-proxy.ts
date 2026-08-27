@@ -12,6 +12,7 @@ export function shouldUseProxyForProvider(provider: string, apiKey: string): boo
     case "anthropic":
       return apiKey.startsWith("sk-ant-oat") || apiKey.startsWith("{");
     case "openai":
+      return apiKey.startsWith("{");
     case "openai-codex":
     case "opencode":
     case "opencode-go":
