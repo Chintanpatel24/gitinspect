@@ -161,7 +161,7 @@ export function AppHeader({ showGetPro = true }: { showGetPro?: boolean } = {}) 
     : getHeaderRepoSource(currentMatch as RouteMatchLike, selectedSession);
 
   return (
-    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b bg-background">
+    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b border-border/60 bg-background/95 backdrop-blur-md">
       <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
         <HeaderTooltip label="Toggle sidebar">
           <SidebarTrigger />

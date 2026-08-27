@@ -57,9 +57,12 @@ export function LandingPage() {
 
         <div className="space-y-2 lg:space-y-1.5">
           <LandingRepoForm />
-          <p className="text-center text-[11px] text-muted-foreground/60">
-            You can also replace &apos;hub&apos; with &apos;inspect&apos; in any GitHub URL.
-          </p>
+          <div className="flex items-center justify-center gap-2 text-center text-[11px] text-muted-foreground/70">
+            <span className="inline-flex items-center rounded-sm bg-muted/60 px-1.5 py-0.5 font-mono text-[10px] uppercase text-muted-foreground">
+              Local Mode
+            </span>
+            <span>Paste any GitHub repository URL or owner/repo to inspect</span>
+          </div>
         </div>
 
         <Tabs value={resolvedTab}>
@@ -182,11 +185,9 @@ function LandingRepoForm() {
     <form onSubmit={(e) => void onSubmit(e)}>
       <InputGroup
         className={cn(
-          "h-11 min-h-11 w-full min-w-0 rounded-none border border-foreground/20 bg-sidebar shadow-none",
-          "transition-colors focus-within:bg-sidebar-accent hover:bg-sidebar-accent",
-          "has-[[data-slot=input-group-control]:focus-visible]:border-foreground/30",
-          "has-[[data-slot=input-group-control]:focus-visible]:ring-0",
-          "dark:bg-sidebar",
+          "h-11 min-h-11 w-full min-w-0 rounded-md border border-border/60 bg-sidebar/80 shadow-sm backdrop-blur-xs",
+          "transition-all focus-within:border-ring/50 focus-within:bg-sidebar focus-within:ring-1 focus-within:ring-ring/30 hover:border-border",
+          "dark:bg-sidebar/90",
         )}
       >
         <InputGroupAddon align="inline-start" className="pl-3.5">

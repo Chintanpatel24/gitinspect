@@ -248,137 +248,137 @@ export const VoiceSelectorAccent = ({
   children,
   ...props
 }: VoiceSelectorAccentProps) => {
-  let emoji: string | null = null;
+  let labelText: string | null = null;
 
   switch (value) {
     case "american": {
-      emoji = "🇺🇸";
+      labelText = "US";
       break;
     }
     case "british": {
-      emoji = "🇬🇧";
+      labelText = "UK";
       break;
     }
     case "australian": {
-      emoji = "🇦🇺";
+      labelText = "AU";
       break;
     }
     case "canadian": {
-      emoji = "🇨🇦";
+      labelText = "CA";
       break;
     }
     case "irish": {
-      emoji = "🇮🇪";
+      labelText = "IE";
       break;
     }
     case "scottish": {
-      emoji = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+      labelText = "SCO";
       break;
     }
     case "indian": {
-      emoji = "🇮🇳";
+      labelText = "IN";
       break;
     }
     case "south-african": {
-      emoji = "🇿🇦";
+      labelText = "ZA";
       break;
     }
     case "new-zealand": {
-      emoji = "🇳🇿";
+      labelText = "NZ";
       break;
     }
     case "spanish": {
-      emoji = "🇪🇸";
+      labelText = "ES";
       break;
     }
     case "french": {
-      emoji = "🇫🇷";
+      labelText = "FR";
       break;
     }
     case "german": {
-      emoji = "🇩🇪";
+      labelText = "DE";
       break;
     }
     case "italian": {
-      emoji = "🇮🇹";
+      labelText = "IT";
       break;
     }
     case "portuguese": {
-      emoji = "🇵🇹";
+      labelText = "PT";
       break;
     }
     case "brazilian": {
-      emoji = "🇧🇷";
+      labelText = "BR";
       break;
     }
     case "mexican": {
-      emoji = "🇲🇽";
+      labelText = "MX";
       break;
     }
     case "argentinian": {
-      emoji = "🇦🇷";
+      labelText = "AR";
       break;
     }
     case "japanese": {
-      emoji = "🇯🇵";
+      labelText = "JP";
       break;
     }
     case "chinese": {
-      emoji = "🇨🇳";
+      labelText = "CN";
       break;
     }
     case "korean": {
-      emoji = "🇰🇷";
+      labelText = "KR";
       break;
     }
     case "russian": {
-      emoji = "🇷🇺";
+      labelText = "RU";
       break;
     }
     case "arabic": {
-      emoji = "🇸🇦";
+      labelText = "SA";
       break;
     }
     case "dutch": {
-      emoji = "🇳🇱";
+      labelText = "NL";
       break;
     }
     case "swedish": {
-      emoji = "🇸🇪";
+      labelText = "SE";
       break;
     }
     case "norwegian": {
-      emoji = "🇳🇴";
+      labelText = "NO";
       break;
     }
     case "danish": {
-      emoji = "🇩🇰";
+      labelText = "DK";
       break;
     }
     case "finnish": {
-      emoji = "🇫🇮";
+      labelText = "FI";
       break;
     }
     case "polish": {
-      emoji = "🇵🇱";
+      labelText = "PL";
       break;
     }
     case "turkish": {
-      emoji = "🇹🇷";
+      labelText = "TR";
       break;
     }
     case "greek": {
-      emoji = "🇬🇷";
+      labelText = "GR";
       break;
     }
     default: {
-      emoji = null;
+      labelText = null;
     }
   }
 
   return (
-    <span className={cn("text-muted-foreground text-xs", className)} {...props}>
-      {children ?? emoji}
+    <span className={cn("text-muted-foreground text-xs uppercase font-mono", className)} {...props}>
+      {children ?? labelText}
     </span>
   );
 };
