@@ -124,6 +124,18 @@ export const PROVIDER_GROUPS: Partial<Record<ProviderGroupId, ProviderGroupDefin
     id: "openai-codex",
     label: "OpenAI Codex",
   },
+  groq: {
+    canonicalProvider: "groq",
+    description: "Groq LPU API key for fast inference",
+    id: "groq",
+    label: "Groq",
+  },
+  openrouter: {
+    canonicalProvider: "openrouter",
+    description: "OpenRouter API key for broad LLM access",
+    id: "openrouter",
+    label: "OpenRouter",
+  },
 };
 
 /** Preferred model-selector group order; remaining supported providers append sorted. */
@@ -133,6 +145,8 @@ const PROVIDER_GROUP_BASE_ORDER: readonly ProviderGroupId[] = [
   "google-gemini-cli",
   "openai",
   "openai-codex",
+  "groq",
+  "openrouter",
   "opencode",
   "opencode-go",
   "fireworks-free",
@@ -219,10 +233,11 @@ export function getDefaultProviderGroup(provider: ProviderId): ProviderGroupId {
 const API_KEY_SETTINGS_PINNED_ORDER: KnownProvider[] = [
   "anthropic",
   "openai",
+  "groq",
+  "openrouter",
   "opencode",
   "opencode-go",
   "google",
-  "groq",
   "mistral",
 ];
 

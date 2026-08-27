@@ -123,6 +123,22 @@ describe("parseRepoInput", () => {
     });
   });
 
+  it("supports SSH git URLs", () => {
+    expect(parseRepoInput("git@github.com:vercel/next.js.git")).toEqual({
+      owner: "vercel",
+      repo: "next.js",
+      type: "repo-root",
+    });
+  });
+
+  it("supports gitinspect.com URLs", () => {
+    expect(parseRepoInput("https://gitinspect.com/vercel/next.js")).toEqual({
+      owner: "vercel",
+      repo: "next.js",
+      type: "repo-root",
+    });
+  });
+
   it("rejects non-GitHub hosts", () => {
     expect(parseRepoInput("https://gitlab.com/foo/bar")).toEqual({
       reason: "Unsupported host: gitlab.com",

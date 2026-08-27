@@ -66,6 +66,8 @@ export const DEFAULT_MODELS: Partial<Record<ProviderId, string>> = {
   opencode: "gpt-5.1-codex-mini",
   "opencode-go": "glm-5",
   "openai-codex": "gpt-5.4",
+  groq: "llama-3.3-70b-versatile",
+  openrouter: "anthropic/claude-3.5-sonnet",
 };
 
 const DEFAULT_GROUP_MODELS: Partial<Record<ProviderGroupId, string>> = {
