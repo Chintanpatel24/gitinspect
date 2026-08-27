@@ -3,26 +3,26 @@ set -e
 
 echo "=== Installing gitinspect locally ==="
 
-if ! command -v bun >/dev/null 2>&1 && ! command -v node >/dev/null 2>&1; then
-  echo "Error: Node.js or Bun is required to run gitinspect."
-  exit 1
-fi
+get_bun() {
+  if command -v bun >/dev/null 2>&1; then
+    echo "bun"
+  elif command -v npx >/dev/null 2>&1; then
+    echo "npx -y bun"
+  else
+    echo "Error: Node/npx or Bun is required to run gitinspect." >&2
+    exit 1
+  fi
+}
 
-echo "Installing dependencies..."
-if command -v bun >/dev/null 2>&1; then
-  bun install
-else
-  npm install
-fi
+BUN_CMD=$(get_bun)
+
+echo "Installing dependencies using Bun ($BUN_CMD)..."
+$BUN_CMD install
 
 echo "Building application packages..."
-if command -v bun >/dev/null 2>&1; then
-  bun run build
-else
-  npm run build
-fi
+$BUN_CMD run build
 
 echo ""
 echo "=== gitinspect installed successfully! ==="
 echo "To start the local web application, run:"
-echo "  bun run dev   (or npm run dev)"
+echo "  $BUN_CMD run dev"
