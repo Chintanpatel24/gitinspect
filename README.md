@@ -18,7 +18,7 @@ Ask questions about any GitHub repository locally or from your browser—without
 Run the one-liner setup command in your terminal to automatically clone, install dependencies, and build gitinspect locally:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gitinspect/gitinspect/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Chintanpatel24/gitinspect/main/install.sh | bash
 ```
 
 Or if you have already cloned the repository manually:
