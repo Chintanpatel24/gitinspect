@@ -1,8 +1,41 @@
+<div align="center">
+
 # gitinspect
 
-![Screenshot 2026-03-28 at 01 36 31](https://github.com/user-attachments/assets/a39a420d-a538-4e8e-82a3-16794b3e0e6f)
+Ask questions about any GitHub repository locally or from your browser—without cloning.
 
-Ask questions about any GitHub repo from your browser—without cloning.
+[![Local Install](https://img.shields.io/badge/install-one--liner-blue?style=flat-square)](#quick-install-one-liner)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-green.svg?style=flat-square)](LICENSE)
+
+![gitinspect Screenshot](https://github.com/user-attachments/assets/a39a420d-a538-4e8e-82a3-16794b3e0e6f)
+
+</div>
+
+---
+
+## Quick Install (One-Liner)
+
+Run the local setup script in your terminal to install dependencies and build gitinspect locally:
+
+```bash
+chmod +x install.sh && ./install.sh
+```
+
+To update or uninstall:
+
+```bash
+# Update local dependencies and rebuild:
+chmod +x update.sh && ./update.sh
+
+# Uninstall local build artifacts and node_modules:
+chmod +x uninstall.sh && ./uninstall.sh
+```
+
+To start the local app:
+
+```bash
+bun run dev   # or npm run dev
+```
 
 You can replace `hub` with `inspect` in any GitHub URL to open the corresponding view here.
 
