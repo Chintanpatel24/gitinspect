@@ -9,6 +9,21 @@ if ! command -v git >/dev/null 2>&1; then
   exit 1
 fi
 
+# Handle remote execution (e.g. curl | bash) outside of a cloned repo
+REPO_URL="https://github.com/gitinspect/gitinspect.git"
+TARGET_DIR="gitinspect"
+
+if [ ! -f "package.json" ] || ! grep -q '"name": "gitinspect"' package.json 2>/dev/null; then
+  if [ -d "$TARGET_DIR" ] && [ -f "$TARGET_DIR/package.json" ]; then
+    echo "Existing '$TARGET_DIR' folder found. Navigating into '$TARGET_DIR'..."
+    cd "$TARGET_DIR"
+  else
+    echo "Cloning gitinspect repository..."
+    git clone "$REPO_URL" "$TARGET_DIR"
+    cd "$TARGET_DIR"
+  fi
+fi
+
 # Ensure standard Bun path is in PATH if present
 if [ -d "$HOME/.bun/bin" ]; then
   export PATH="$HOME/.bun/bin:$PATH"
@@ -75,5 +90,5 @@ bun run build
 
 echo ""
 echo "=== gitinspect installed successfully! ==="
-echo "To start the local web application, run:"
-echo "  bun run dev"
+echo "To start the local web application, navigate into the repo directory (if not already there) and run:"
+echo "  cd $(pwd) && bun run dev"
