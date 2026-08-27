@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# Increase Node heap space to prevent OOM during heavy Vite/Nitro builds
+export NODE_OPTIONS="${NODE_OPTIONS:---max-old-space-size=4096}"
+
 echo "=== Installing gitinspect locally ==="
 
 # Check for git
@@ -29,66 +32,124 @@ if [ -d "$HOME/.bun/bin" ]; then
   export PATH="$HOME/.bun/bin:$PATH"
 fi
 
-# Ensure Bun is installed
-ensure_bun() {
-  if command -v bun >/dev/null 2>&1; then
-    return 0
+# Prompt user for package manager preference if both or none are active
+select_package_manager() {
+  # If explicitly passed via argument or environment variable
+  if [ -n "$USE_PKG_MGR" ]; then
+    PKG_MGR="$USE_PKG_MGR"
+    return
   fi
 
-  echo "Bun is required to run gitinspect, but it is not installed."
+  HAS_BUN=false
+  HAS_NPM=false
+  command -v bun >/dev/null 2>&1 && HAS_BUN=true
+  command -v npm >/dev/null 2>&1 && HAS_NPM=true
 
-  AUTO_INSTALL=false
   if [ "$1" = "-y" ] || [ "$CI" = "true" ]; then
-    AUTO_INSTALL=true
-  elif [ -t 0 ] || [ -c /dev/tty ]; then
+    if [ "$HAS_BUN" = "true" ]; then
+      PKG_MGR="bun"
+    elif [ "$HAS_NPM" = "true" ]; then
+      PKG_MGR="npm"
+    else
+      PKG_MGR="bun"
+    fi
+    return
+  fi
+
+  if [ -t 0 ] || [ -c /dev/tty ]; then
     exec < /dev/tty 2>/dev/null || true
-    read -rp "Would you like to install Bun now? [Y/n] " response
-    case "$response" in
-      [yY][eE][sS]|[yY]|"")
-        AUTO_INSTALL=true
+    echo ""
+    echo "Select package manager / runtime to use:"
+    echo "1) Bun (Recommended)"
+    echo "2) Node.js / npm"
+    read -rp "Enter choice [1/2, default: 1]: " choice
+    case "$choice" in
+      2|[nN][oO][dD][eE]|[nN][pP][mM])
+        PKG_MGR="npm"
         ;;
       *)
-        AUTO_INSTALL=false
+        PKG_MGR="bun"
         ;;
     esac
-  fi
-
-  if [ "$AUTO_INSTALL" = "true" ]; then
-    echo "Installing Bun..."
-    if command -v curl >/dev/null 2>&1; then
-      curl -fsSL https://bun.sh/install | bash
-    elif command -v npm >/dev/null 2>&1; then
-      npm install -g bun
-    else
-      echo "Error: Neither curl nor npm is available to install Bun automatically." >&2
-      echo "Please install Bun manually from https://bun.sh" >&2
-      exit 1
-    fi
-
-    if [ -d "$HOME/.bun/bin" ]; then
-      export PATH="$HOME/.bun/bin:$PATH"
-    fi
-
-    if ! command -v bun >/dev/null 2>&1; then
-      echo "Error: Bun installation finished, but 'bun' command was not found in PATH." >&2
-      echo "Please add Bun to your PATH (e.g. export PATH=\"\$HOME/.bun/bin:\$PATH\") and re-run." >&2
-      exit 1
-    fi
   else
-    echo "Please install Bun from https://bun.sh or using 'npm install -g bun', then re-run this script." >&2
-    exit 1
+    PKG_MGR="bun"
   fi
 }
 
-ensure_bun "$@"
+select_package_manager "$@"
 
-echo "Installing dependencies using Bun..."
-bun install
+ensure_runtime() {
+  if [ "$PKG_MGR" = "npm" ]; then
+    if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
+      echo "Error: Node.js and npm are required when using npm manager." >&2
+      exit 1
+    fi
+  else
+    if ! command -v bun >/dev/null 2>&1; then
+      echo "Bun is required, but it is not installed."
+      AUTO_INSTALL=false
+      if [ "$1" = "-y" ] || [ "$CI" = "true" ]; then
+        AUTO_INSTALL=true
+      elif [ -t 0 ] || [ -c /dev/tty ]; then
+        exec < /dev/tty 2>/dev/null || true
+        read -rp "Would you like to install Bun now? [Y/n] " response
+        case "$response" in
+          [yY][eE][sS]|[yY]|"")
+            AUTO_INSTALL=true
+            ;;
+          *)
+            AUTO_INSTALL=false
+            ;;
+        esac
+      fi
 
-echo "Building application packages..."
-bun run build
+      if [ "$AUTO_INSTALL" = "true" ]; then
+        echo "Installing Bun..."
+        if command -v curl >/dev/null 2>&1; then
+          curl -fsSL https://bun.sh/install | bash
+        elif command -v npm >/dev/null 2>&1; then
+          npm install -g bun
+        else
+          echo "Error: Neither curl nor npm is available to install Bun automatically." >&2
+          echo "Please install Bun manually from https://bun.sh" >&2
+          exit 1
+        fi
+
+        if [ -d "$HOME/.bun/bin" ]; then
+          export PATH="$HOME/.bun/bin:$PATH"
+        fi
+
+        if ! command -v bun >/dev/null 2>&1; then
+          echo "Error: Bun installation finished, but 'bun' command was not found in PATH." >&2
+          echo "Please add Bun to your PATH (e.g. export PATH=\"\$HOME/.bun/bin:\$PATH\") and re-run." >&2
+          exit 1
+        fi
+      else
+        echo "Please install Bun from https://bun.sh or choose Node.js option." >&2
+        exit 1
+      fi
+    fi
+  fi
+}
+
+ensure_runtime "$@"
+
+echo "Installing dependencies using $PKG_MGR..."
+if [ "$PKG_MGR" = "npm" ]; then
+  npm install
+  echo "Building application packages..."
+  npm run build
+else
+  bun install
+  echo "Building application packages..."
+  bun run build
+fi
 
 echo ""
 echo "=== gitinspect installed successfully! ==="
 echo "To start the local web application, navigate into the repo directory (if not already there) and run:"
-echo "  cd $(pwd) && bun run dev"
+if [ "$PKG_MGR" = "npm" ]; then
+  echo "  cd $(pwd) && npm run dev"
+else
+  echo "  cd $(pwd) && bun run dev"
+fi
