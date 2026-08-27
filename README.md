@@ -15,7 +15,13 @@ Ask questions about any GitHub repository locally or from your browser—without
 
 ## Quick Install (One-Liner)
 
-Run the local setup script in your terminal to install dependencies and build gitinspect locally:
+Run the one-liner setup command in your terminal to automatically clone, install dependencies, and build gitinspect locally:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/gitinspect/gitinspect/main/install.sh | bash
+```
+
+Or if you have already cloned the repository manually:
 
 ```bash
 chmod +x install.sh && ./install.sh
@@ -34,7 +40,7 @@ chmod +x uninstall.sh && ./uninstall.sh
 To start the local app:
 
 ```bash
-bun run dev   # or npm run dev
+cd gitinspect && bun run dev   # or npm run dev
 ```
 
 You can replace `hub` with `inspect` in any GitHub URL to open the corresponding view here.
